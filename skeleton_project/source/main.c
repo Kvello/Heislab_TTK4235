@@ -3,26 +3,28 @@
 #include <signal.h>
 #include <time.h>
 #include "driver/elevio.h"
+#include "elevator.h"
 
 
 
 int main(){
     elevio_init();
-    
+    Elevator elevator;
+    elevatorInit(&elevator);
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
 
     elevio_motorDirection(DIRN_UP);
 
     while(1){
-        int floor = elevio_floorSensor();
-        printf("floor: %d \n",floor);
+        elevator.current_floor = elevio_floorSensor();
+        printf("floor: %d \n",elevator.current_floor);
 
-        if(floor == 0){
+        if(elevator.current_floor == 0){
             elevio_motorDirection(DIRN_UP);
         }
 
-        if(floor == N_FLOORS-1){
+        if(elevator.current_floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
         }
 
@@ -30,6 +32,7 @@ int main(){
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
+                newOrder(&(elevator.order_queue),f , b);
                 elevio_buttonLamp(f, b, btnPressed);
             }
         }
