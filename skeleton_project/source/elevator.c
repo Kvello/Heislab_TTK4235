@@ -17,8 +17,10 @@ void setElevatorDirection(Elevator* elevator, MotorDirection new_dir){
     return;
 }
 Elevator elevatorInit(Elevator* elevator){
-    for(int i=0; i<N_FLOORS*N_ORDER_TYPES;i++){
-        elevator->order_queue[i%N_FLOORS][i%N_ORDER_TYPES]=f;
+    for(int i=0; i<N_FLOORS;i++){
+        for (int j=0; j<N_ORDER_TYPES;j++){
+            elevator->order_queue[i][j]=f;
+        }
     }
     elevator->dir=DIRN_STOP;
     elevator->num_orders=0;

@@ -15,18 +15,20 @@ void newOrder(OrderSys* order_sys, Floor floor, OrderType order_type){
 Floor getNextOrder(OrderSys* order_sys){
     int i=0;
     Floor dest;
-    while(i<N_FLOORS*N_ORDER_TYPES){
-        if(order_sys->orders[i%N_FLOORS][i%N_ORDER_TYPES]){
-            dest=i%N_FLOORS;
-
-            return dest;
+    for(int floor=0;floor<N_FLOORS;floor++){
+        for(int order_num=0; order_num<N_ORDER_TYPES; order_num++){
+            if(order_sys->orders[floor][order_num] == t){
+                dest = floor;
+                return dest;
+            }
         }
     }
+    //return undefined;?
 }
 void orderComplete(OrderSys* order_sys, Floor current_floor){
     for(int i=0; i<N_ORDER_TYPES; i++){
-        if(order_sys->orders[current_floor][i]){
-            order_sys->orders[current_floor][i]=f;
+        if(order_sys->orders[current_floor][i] == t){
+            order_sys->orders[current_floor][i] = f;
             order_sys->num_orders--;
         }
         
