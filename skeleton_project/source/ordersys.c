@@ -1,6 +1,6 @@
 #include "ordersys.h"
 
-void newOrder(OrderSys* order_sys, Floor floor, OrderType order_type){
+void newOrder(OrderSys* order_sys, Floor floor, ButtonType order_type){
     //Sjekk?
     order_sys->orders[floor][order_type]=t;
     order_sys->num_orders++;
