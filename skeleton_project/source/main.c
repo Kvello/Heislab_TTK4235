@@ -38,13 +38,15 @@ int main(){
         }
 
         if(elevio_obstruction()){
+            elevator.obstructed=t;
             elevio_stopLamp(1);
         } else {
+            elevator.obstructed=f;
             elevio_stopLamp(0);
         }
         
         if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
+            elevator.stop_btn = t;;
             break;
         }
         

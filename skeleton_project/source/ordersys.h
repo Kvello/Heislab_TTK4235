@@ -1,5 +1,6 @@
 #pragma once
 #include "driver/elevio.h"
+#include "utils.h"
 #include <inttypes.h>
 #include <stdint.h>
 
@@ -15,20 +16,16 @@
  * 
  */
 typedef enum Floor {undefined=-1,first=0, second, third, fourth} Floor;
-/**
- * @brief Hjelpe struktur for sann/usann verdier
- * 
- */
-typedef enum Bool{f, t} Bool;
+
 
 
 /**
  * @brief tabell av ordre. Hvert element kan være true eller false(1/0), siden hver bestilling kan være bestillt eller ikke.
  * Strukturen til tabellen er slik:
- * 1 etasje | Kupeknapp | Opp | -
- * 2 etasje | Kupeknapp | Opp | Ned
- * 3 etasje | Kupeknapp | Opp | Ned
- * 4 etasje | Kupeknapp | -   | Ned
+ * 1 etasje | Opp |  -  | Kupeknapp
+ * 2 etasje | Opp | Ned | Kupeknapp
+ * 3 etasje | Opp | Ned | Kupeknapp
+ * 4 etasje |  -  | Ned | Kupeknapp
  */
 
 typedef Bool OrderQueue[N_FLOORS][N_ORDER_TYPES];

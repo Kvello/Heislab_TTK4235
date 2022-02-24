@@ -1,4 +1,5 @@
 #include "elevator.h"
+#include "utils.h"
 
 MotorDirection getElevatorDirection(Elevator* elevator){
     return elevator->dir;
@@ -19,10 +20,12 @@ void setElevatorDirection(Elevator* elevator, MotorDirection new_dir){
 Elevator elevatorInit(Elevator* elevator){
     for(int i=0; i<N_FLOORS;i++){
         for (int j=0; j<N_ORDER_TYPES;j++){
-            elevator->order_queue[i][j]=f;
+            elevator->order_queue[i][j] = f;
         }
     }
-    elevator->dir=DIRN_STOP;
-    elevator->num_orders=0;
-    elevator->current_floor=undefined;
+    elevator->obstructed    = f;
+    elevator->stop_btn      = f;
+    elevator->dir           = DIRN_STOP;
+    elevator->num_orders    = 0;
+    elevator->current_floor =undefined;
 }

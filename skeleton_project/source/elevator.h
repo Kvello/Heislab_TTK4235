@@ -1,6 +1,7 @@
 #pragma once
 #include "ordersys.h"
 #include "driver/elevio.h"
+#include "utils.h"
 #include <stdint.h>
 #include <inttypes.h>
 
@@ -10,6 +11,8 @@ typedef struct elevator
     uint8_t num_orders;
     MotorDirection dir;
     Floor current_floor;
+    Bool  obstructed;
+    Bool stop_btn;
 } Elevator;
 
 MotorDirection getElevatorDirection(Elevator*);
