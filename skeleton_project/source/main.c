@@ -19,7 +19,7 @@ int main(){
     while(1){
         elevator.current_floor = elevio_floorSensor();
         printf("floor: %d \n",elevator.current_floor);
-
+/*
         if(elevator.current_floor == 0){
             elevio_motorDirection(DIRN_UP);
         }
@@ -27,7 +27,7 @@ int main(){
         if(elevator.current_floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
         }
-
+*/
 
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
@@ -50,6 +50,7 @@ int main(){
             break;
         }
         nextAction(&elevator);
+        elevio_motorDirection(elevator.dir);
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }

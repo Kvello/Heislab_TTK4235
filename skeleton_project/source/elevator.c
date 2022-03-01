@@ -27,10 +27,39 @@ Elevator elevatorInit(Elevator* elevator){
     elevator->stop_btn      = f;
     elevator->dir           = DIRN_STOP;
     elevator->num_orders    = 0;
+    elevator->door_open     = f;
     elevator->current_floor =undefined;
 }
 void nextAction(Elevator* elevator){
-    current_order = getNextOrder(&(elevator->order_queue))
-    Bool data_vector[4][1] =   {{getElevatorFloor(elevator)>current_order},
-                                {getElevatorFloor(elevator)=current_order},}; 
+    Floor current_order =   getNextOrder(&(elevator->order_queue));
+    Bool data_vector[NUM_STATE_VARIABLES] = {elevator->door_open,
+                                            getElevatorFloor(elevator)>current_order,
+                                            getElevatorFloor(elevator)<current_order,
+                                            getElevatorFloor(elevator)==current_order,
+                                            elevator->stop_btn};
+    Bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
+    columnWiseAnd(data_vector, mask_table, state_table);
+    Bool rules_fulfiled[NUM_ACTIONS];
+    columWiseComparison(state_table, condidtion_table, rules_fulfiled);
+    for(int i=0; i<NUM_ACTIONS; i++){
+        if(rules_fulfiled[i] == t){
+            executeAction(i, elevator);
+        }
+    }
+}
+
+void executeAction(int action_num, Elevator* elevator){
+    if(action_num == 0){
+        elevator->dir = DIRN_UP;
+        
+    }
+    else if(action_num == 1){
+        elevator->dir = DIRN_DOWN;
+    }
+    else if(action_num == 2){
+        elevator->dir = DIRN_STOP;
+    }
+    else if(action_num == 3){
+        elevator->dir = DIRN_STOP;
+    }
 }
