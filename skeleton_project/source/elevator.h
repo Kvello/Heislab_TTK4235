@@ -5,10 +5,14 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-Bool decision_table[4][6] = {{ t, f, t, f, t, t},
-                            { t, t, t, f, f, t},
-                            { t, t, f, t, t ,t},
-                            { t, t, t, f, f, t}};
+Bool condidtion_table[5][4] =   {{ t, t, t, f},
+                                { t, f, f, f},
+                                { f, t, f, f},
+                                { f, f, f, t}};
+Bool mask_table[5][4] =     {{t, t, t, f},
+                            {t, t, t, f},
+                            {t, t, t, f},
+                            {t, t, t, t}};
 
 typedef struct elevator
 {
