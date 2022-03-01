@@ -29,4 +29,4 @@ Floor getElevatorFloor(Elevator*);
 void setElevatorFloor(Elevator*, Floor);
 void setElevatorDirection(Elevator*, MotorDirection);
 Elevator elevatorInit(Elevator*);
-void makeDecision(Elevator*);
+void nextAction(Elevator*);

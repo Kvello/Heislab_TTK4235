@@ -29,7 +29,7 @@ Elevator elevatorInit(Elevator* elevator){
     elevator->num_orders    = 0;
     elevator->current_floor =undefined;
 }
-void makeDecision(Elevator* elevator){
+void nextAction(Elevator* elevator){
     current_order = getNextOrder(&(elevator->order_queue))
     Bool data_vector[4][1] =   {{getElevatorFloor(elevator)>current_order},
                                 {getElevatorFloor(elevator)=current_order},}; 
