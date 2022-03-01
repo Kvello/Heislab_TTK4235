@@ -19,7 +19,7 @@ Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =     {{t, t, t, f},
 
 typedef struct elevator
 {
-    OrderQueue order_queue;
+    OrderSys order_system;
     uint8_t num_orders;
     MotorDirection dir;
     Floor current_floor;
@@ -32,6 +32,6 @@ MotorDirection getElevatorDirection(Elevator*);
 Floor getElevatorFloor(Elevator*);
 void setElevatorFloor(Elevator*, Floor);
 void setElevatorDirection(Elevator*, MotorDirection);
-Elevator elevatorInit(Elevator*);
+void elevatorInit(Elevator*);
 void nextAction(Elevator*);
 void executeAction(int, Elevator*);

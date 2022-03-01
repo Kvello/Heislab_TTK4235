@@ -17,10 +17,10 @@ void setElevatorDirection(Elevator* elevator, MotorDirection new_dir){
     elevator->dir=new_dir;
     return;
 }
-Elevator elevatorInit(Elevator* elevator){
+void elevatorInit(Elevator* elevator){
     for(int i=0; i<N_FLOORS;i++){
         for (int j=0; j<N_ORDER_TYPES;j++){
-            elevator->order_queue[i][j] = f;
+            elevator->order_system.orders[i][j] = f;
         }
     }
     elevator->obstructed    = f;
@@ -31,7 +31,7 @@ Elevator elevatorInit(Elevator* elevator){
     elevator->current_floor =undefined;
 }
 void nextAction(Elevator* elevator){
-    Floor current_order =   getNextOrder(&(elevator->order_queue));
+    Floor current_order =   getNextOrder(&(elevator->order_system));
     Bool data_vector[NUM_STATE_VARIABLES] = {elevator->door_open,
                                             getElevatorFloor(elevator)>current_order,
                                             getElevatorFloor(elevator)<current_order,
@@ -40,7 +40,7 @@ void nextAction(Elevator* elevator){
     Bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
     columnWiseAnd(data_vector, mask_table, state_table);
     Bool rules_fulfiled[NUM_ACTIONS];
-    columWiseComparison(state_table, condidtion_table, rules_fulfiled);
+    columnWiseComparison(state_table, condidtion_table, rules_fulfiled);
     for(int i=0; i<NUM_ACTIONS; i++){
         if(rules_fulfiled[i] == t){
             executeAction(i, elevator);
@@ -51,13 +51,14 @@ void nextAction(Elevator* elevator){
 void executeAction(int action_num, Elevator* elevator){
     if(action_num == 0){
         elevator->dir = DIRN_UP;
-        
+
     }
     else if(action_num == 1){
         elevator->dir = DIRN_DOWN;
     }
     else if(action_num == 2){
         elevator->dir = DIRN_STOP;
+        orderComplete(&(elevator->order_system), elevator->current_floor);
     }
     else if(action_num == 3){
         elevator->dir = DIRN_STOP;
