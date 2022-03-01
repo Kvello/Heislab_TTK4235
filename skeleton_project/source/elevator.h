@@ -5,14 +5,17 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-Bool condidtion_table[5][4] =   {{ t, t, t, f},
-                                { t, f, f, f},
-                                { f, t, f, f},
-                                { f, f, f, t}};
-Bool mask_table[5][4] =     {{t, t, t, f},
-                            {t, t, t, f},
-                            {t, t, t, f},
-                            {t, t, t, t}};
+#define NUM_STATE_VARIABLES 5
+#define NUM_ACTIONS 4
+
+Bool condidtion_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, t, f},
+                                                            { t, f, f, f},
+                                                            { f, t, f, f},
+                                                            { f, f, f, t}};
+Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =     {{t, t, t, f},
+                                                        {t, t, t, f},
+                                                        {t, t, t, f},
+                                                        {t, t, t, t}};
 
 typedef struct elevator
 {
@@ -22,6 +25,7 @@ typedef struct elevator
     Floor current_floor;
     Bool  obstructed;
     Bool stop_btn;
+    Bool door_open;
 } Elevator;
 
 MotorDirection getElevatorDirection(Elevator*);
@@ -30,3 +34,4 @@ void setElevatorFloor(Elevator*, Floor);
 void setElevatorDirection(Elevator*, MotorDirection);
 Elevator elevatorInit(Elevator*);
 void nextAction(Elevator*);
+void executeAction(int, Elevator*);
