@@ -1,14 +1,14 @@
 #include "elevator.h"
 
 Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, t, f},
-                                        { t, f, f, f},
-                                        { f, t, f, f},
-                                        { f, f, f, t}};
+                                                            { t, f, f, f},
+                                                            { f, t, f, f},
+                                                            { f, f, f, t}};
 
-Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{t, t, t, f},
-                                    {t, t, t, f},
-                                    {t, t, t, f},
-                                    {t, t, t, t}};
+Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] = {{t, t, t, f},
+                                                    {t, t, t, f},
+                                                    {t, t, t, f},
+                                                    {t, t, t, t}};
 
 MotorDirection getElevatorDirection(Elevator* elevator){
     return elevator->dir;
