@@ -1,7 +1,6 @@
 #include "utils.h"
 #include "elevator.h"
-
-void columnWiseAnd(Bool* data_vector, Bool** table, Bool** result_table){
+void columnWiseAnd(Bool* data_vector, Bool table[][NUM_ACTIONS], Bool result_table[][NUM_ACTIONS]){
     for(int i=0; i<NUM_STATE_VARIABLES; i++)
         for(int j=0; j<NUM_ACTIONS; j++){
             if(data_vector[i] && table[i][j]){
@@ -12,10 +11,10 @@ void columnWiseAnd(Bool* data_vector, Bool** table, Bool** result_table){
             }
         }
 }
-void columnWiseComparison(Bool** table1, Bool** table2, Bool* result_column){
+void columnWiseComparison(Bool table1[][NUM_ACTIONS], Bool table2[][NUM_ACTIONS], Bool* result_column){
     for(int i=0; i<NUM_ACTIONS; i++){
         int j=0;
-        for(j; j<NUM_STATE_VARIABLES; j++){
+        for(j=0; j<NUM_STATE_VARIABLES; j++){
             if(table1[j][i] != table2[j][i]) break;
         }
         if(j==NUM_ACTIONS){
