@@ -1,11 +1,11 @@
 #include "elevator.h"
 
-Bool condition_table[][NUM_ACTIONS] =   {{ t, t, t, f},
+Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, t, f},
                                         { t, f, f, f},
                                         { f, t, f, f},
                                         { f, f, f, t}};
 
-Bool mask_table[][NUM_ACTIONS] =    {{t, t, t, f},
+Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{t, t, t, f},
                                     {t, t, t, f},
                                     {t, t, t, f},
                                     {t, t, t, t}};
