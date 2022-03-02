@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <time.h>
-#include "driver/elevio.h"
 #include "elevator.h"
-
 
 
 int main(){
@@ -13,8 +11,6 @@ int main(){
     elevatorInit(&elevator);
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
-
-    elevio_motorDirection(DIRN_UP);
 
     while(1){
         elevator.current_floor = elevio_floorSensor();

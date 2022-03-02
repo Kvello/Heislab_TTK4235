@@ -1,5 +1,4 @@
 #include "utils.h"
-#include "elevator.h"
 void columnWiseAnd(Bool* data_vector, Bool table[][NUM_ACTIONS], Bool result_table[][NUM_ACTIONS]){
     for(int i=0; i<NUM_STATE_VARIABLES; i++)
         for(int j=0; j<NUM_ACTIONS; j++){
