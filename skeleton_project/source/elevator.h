@@ -21,5 +21,5 @@ Floor getElevatorFloor(Elevator*);
 void setElevatorFloor(Elevator*, Floor);
 void setElevatorDirection(Elevator*, MotorDirection);
 void elevatorInit(Elevator*);
-//void nextAction(Elevator*);
+void nextAction(Elevator*);
 void executeAction(int, Elevator*);
