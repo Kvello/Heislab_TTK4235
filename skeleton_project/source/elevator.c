@@ -1,5 +1,14 @@
 #include "elevator.h"
-#include "utils.h"
+
+Bool condition_table[][NUM_ACTIONS] =   {{ t, t, t, f},
+                                        { t, f, f, f},
+                                        { f, t, f, f},
+                                        { f, f, f, t}};
+
+Bool mask_table[][NUM_ACTIONS] =    {{t, t, t, f},
+                                    {t, t, t, f},
+                                    {t, t, t, f},
+                                    {t, t, t, t}};
 
 MotorDirection getElevatorDirection(Elevator* elevator){
     return elevator->dir;
@@ -30,7 +39,7 @@ void elevatorInit(Elevator* elevator){
     elevator->door_open     = f;
     elevator->current_floor =undefined;
 }
-void nextAction(Elevator* elevator){
+/*void nextAction(Elevator* elevator){
     Floor current_order =   getNextOrder(&(elevator->order_system));
     Bool data_vector[NUM_STATE_VARIABLES] = {elevator->door_open,
                                             getElevatorFloor(elevator)>current_order,
@@ -38,15 +47,15 @@ void nextAction(Elevator* elevator){
                                             getElevatorFloor(elevator)==current_order,
                                             elevator->stop_btn};
     Bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
-    columnWiseAnd(data_vector, mask_table, state_table);
+    columnWiseAnd(data_vector, state_table, state_table);
     Bool rules_fulfiled[NUM_ACTIONS];
-    columnWiseComparison(state_table, condidtion_table, rules_fulfiled);
+    columnWiseComparison(state_table, condition_table, rules_fulfiled);
     for(int i=0; i<NUM_ACTIONS; i++){
         if(rules_fulfiled[i] == t){
             executeAction(i, elevator);
         }
     }
-}
+}*/
 
 void executeAction(int action_num, Elevator* elevator){
     if(action_num == 0){
