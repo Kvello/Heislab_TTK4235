@@ -1,8 +1,9 @@
 #pragma once
 #include "ordersys.h"
+#include "elevio.h"
 #include <time.h>
 
-typedef enum actions{up=0, down, stop,emergency_stop , start_timer, open_door, close_door} Action; 
+typedef enum rules{up=0, down=1, arrived=2, emergency_stop=3, start_timer=4, obstructed=5 , close_door=6, no_orders=7} Rules; 
 
 
 
@@ -24,4 +25,4 @@ void setElevatorFloor(Elevator*, Floor);
 void setElevatorDirection(Elevator*, MotorDirection);
 void elevatorInit(Elevator*);
 void nextAction(Elevator*);
-void executeAction(Action, Elevator*);
+void executeAction(Rules, Elevator*);

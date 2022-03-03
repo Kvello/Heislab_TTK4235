@@ -58,9 +58,10 @@ void nextAction(Elevator* elevator){
                                             getElevatorFloor(elevator)==current_order,
                                             elevator->stop_btn,
                                             difftime(time(NULL),elevator->stop_time)<3,
-                                            elevator->obstructed};
+                                            elevator->obstructed,
+                                            current_order == undefined};
     Bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
-    columnWiseAnd(data_vector, state_table, state_table);
+    columnWiseAnd(data_vector, mask_table, state_table);
     Bool rules_fulfiled[NUM_ACTIONS];
     columnWiseComparison(state_table, condition_table, rules_fulfiled);
 
@@ -76,29 +77,39 @@ void nextAction(Elevator* elevator){
     }
 }
 
-void executeAction(Action action, Elevator* elevator){
-    switch(action){
+void executeAction(Rules rule, Elevator* elevator){
+    switch(rule){
         case up:
             elevator->dir = DIRN_UP;
             break;
         case down:
             elevator->dir = DIRN_DOWN;
             break;
-        case stop:
+        case arrived:
             elevator->dir = DIRN_STOP;
             orderComplete(&(elevator->order_system), elevator->current_floor);
             break;
         case emergency_stop:
+            for(int i=0; i<N_FLOORS; i++){
+                orderComplete(&(elevator->order_system), i);
+            }
             elevator->dir = DIRN_STOP;
             break;
         case start_timer:
+            elevator->dir = DIRN_STOP;
+            orderComplete(&(elevator->order_system), elevator->current_floor);
             elevator->stop_time = time(NULL);
+            elevator->door_open = t;
             break;
-        case open_door:
+        case obstructed:
             elevator->door_open = t;
             break;
         case close_door:
             elevator->door_open = f;
             break;
+        case no_orders:
+            elevator->dir = DIRN_STOP;
+            elevator->door_open = f;
+
     }
 }
