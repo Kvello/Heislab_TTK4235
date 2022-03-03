@@ -52,7 +52,7 @@ void elevatorInit(Elevator* elevator){
 }
 void nextAction(Elevator* elevator){
     Floor current_order =   getNextOrder(&(elevator->order_system));
-    Bool data_vector[NUM_STATE_VARIABLES] = {elevator->door_open,
+    Bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             getElevatorFloor(elevator)>current_order,
                                             getElevatorFloor(elevator)<current_order,
                                             getElevatorFloor(elevator)==current_order,
@@ -108,6 +108,7 @@ void executeAction(Rules rule, Elevator* elevator){
             elevator->door_open = f;
             break;
         case no_orders:
+            printf("no orders\n");
             elevator->dir = DIRN_STOP;
             elevator->door_open = f;
 
