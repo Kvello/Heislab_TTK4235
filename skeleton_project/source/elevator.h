@@ -27,3 +27,4 @@ void elevatorInit(Elevator*);
 void nextAction(Elevator*);
 void executeAction(Rules, Elevator*);
 void onwayOrders(Elevator*);
+void setLamps(Elevator*);
