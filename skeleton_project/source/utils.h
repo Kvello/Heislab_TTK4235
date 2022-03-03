@@ -1,6 +1,6 @@
 #pragma once
 #define NUM_STATE_VARIABLES 8
-#define NUM_ACTIONS 7
+#define NUM_ACTIONS 8
 
 /**
  * @brief Hjelpe struktur for sann/usann verdier
