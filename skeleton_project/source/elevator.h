@@ -26,3 +26,4 @@ void setElevatorDirection(Elevator*, MotorDirection);
 void elevatorInit(Elevator*);
 void nextAction(Elevator*);
 void executeAction(Rules, Elevator*);
+void onwayOrders(Elevator*);

@@ -14,7 +14,7 @@ int main(){
 
     while(1){
         int floor = elevio_floorSensor();
-        if(floor!=undefined){
+        if(floor != undefined){
             elevator.current_floor = floor;
         }
         
@@ -49,8 +49,9 @@ int main(){
         }
         
         if(elevio_stopButton()){
-            elevator.stop_btn = t;;
-            break;
+            elevator.stop_btn = t;
+        } else{
+            elevator.stop_btn = f;
         }
         nextAction(&elevator);
         elevio_motorDirection(elevator.dir);
