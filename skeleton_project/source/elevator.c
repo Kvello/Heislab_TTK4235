@@ -76,18 +76,25 @@ void executeAction(Action action, Elevator* elevator){
     switch(action){
         case up:
             elevator->dir = DIRN_UP;
+            break;
         case down:
             elevator->dir = DIRN_DOWN;
+            break;
         case stop:
             elevator->dir = DIRN_STOP;
             orderComplete(&(elevator->order_system), elevator->current_floor);
+            break;
         case emergency_stop:
             elevator->dir = DIRN_STOP;
+            break;
         case start_timer:
             elevator->stop_time = time(NULL);
+            break;
         case open_door:
             elevator->door_open = t;
+            break;
         case close_door:
             elevator->door_open = f;
+            break;
     }
 }
