@@ -14,7 +14,7 @@ int main(){
 
     while(1){
         elevator.current_floor = elevio_floorSensor();
-        printf("floor: %d \n",elevator.current_floor);
+        //printf("floor: %d \n",elevator.current_floor);
 /*
         if(elevator.current_floor == 0){
             elevio_motorDirection(DIRN_UP);
@@ -30,8 +30,9 @@ int main(){
                 int btnPressed = elevio_callButton(f, b);
                 if(btnPressed){
                     newOrder(&(elevator.order_system),f , b);
-                    elevio_buttonLamp(f, b, btnPressed);
+                    
                 }
+                elevio_buttonLamp(f, b, elevator.order_system.orders[f][b]);
             }
         }
 

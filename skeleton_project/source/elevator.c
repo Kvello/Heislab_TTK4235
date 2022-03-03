@@ -1,14 +1,22 @@
 #include "elevator.h"
+#include <stdio.h>
+Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f},
+                                                            { t, f, f, f, f, f, f},
+                                                            { f, t, f, f, f, f, f},
+                                                            { f, f, f, f, t, f, f},
+                                                            { f, f, f, t, f, f, f},
+                                                            { f, f, t, f, f, f, f},
+                                                            { f, f, f, f, f, t, f}};
 
-Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, t, f},
-                                                            { t, f, f, f},
-                                                            { f, t, f, f},
-                                                            { f, f, f, t}};
 
-Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] = {{t, t, t, f},
-                                                    {t, t, t, f},
-                                                    {t, t, t, f},
-                                                    {t, t, t, t}};
+Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, t, t, t, f, f},
+                                                        { t, f, t, t, f, t, t},
+                                                        { f, t, t, t, f, t, t},
+                                                        { f, f, t, t, t, t, t},
+                                                        { f, f, f, t, f, t, f},
+                                                        { t, t, t, t, f, t, f},
+                                                        { t, t, t, t, t, t, f}};
+
 
 MotorDirection getElevatorDirection(Elevator* elevator){
     return elevator->dir;
@@ -50,7 +58,13 @@ void nextAction(Elevator* elevator){
     columnWiseAnd(data_vector, state_table, state_table);
     Bool rules_fulfiled[NUM_ACTIONS];
     columnWiseComparison(state_table, condition_table, rules_fulfiled);
+
+    for(int i=0; i<NUM_STATE_VARIABLES; i++){
+        printf("datavector[%d]: %d\n",i, data_vector[i]);
+    }
+
     for(int i=0; i<NUM_ACTIONS; i++){
+        printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
         if(rules_fulfiled[i] == t){
             executeAction(i, elevator);
         }
@@ -60,7 +74,6 @@ void nextAction(Elevator* elevator){
 void executeAction(int action_num, Elevator* elevator){
     if(action_num == 0){
         elevator->dir = DIRN_UP;
-
     }
     else if(action_num == 1){
         elevator->dir = DIRN_DOWN;
@@ -71,5 +84,6 @@ void executeAction(int action_num, Elevator* elevator){
     }
     else if(action_num == 3){
         elevator->dir = DIRN_STOP;
+
     }
 }
