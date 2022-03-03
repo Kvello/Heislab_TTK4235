@@ -1,21 +1,23 @@
 #include "elevator.h"
 #include <stdio.h>
-Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f},
-                                                            { t, f, f, f, f, f, f},
-                                                            { f, t, f, f, f, f, f},
-                                                            { f, f, f, f, t, f, f},
-                                                            { f, f, f, t, f, f, f},
-                                                            { f, f, t, f, f, f, f},
-                                                            { f, f, f, f, f, t, f}};
+Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f, f},
+                                                            { t, f, f, f, f, f, f, f},
+                                                            { f, t, f, f, f, f, f, f},
+                                                            { f, f, f, f, t, f, f, f},
+                                                            { f, f, f, t, f, f, f, f},
+                                                            { f, f, t, f, f, f, f, f},
+                                                            { f, f, f, f, f, t, f, f},
+                                                            { f, f, f, f, f, f, f, t}};
 
 
-Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, t, t, t, f, f},
-                                                        { t, f, t, t, f, t, t},
-                                                        { f, t, t, t, f, t, t},
-                                                        { f, f, t, t, t, t, t},
-                                                        { f, f, f, t, f, t, f},
-                                                        { t, t, t, t, f, t, f},
-                                                        { t, t, t, t, t, t, f}};
+Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, t, t, t, f, f, f},
+                                                        { t, f, t, t, f, t, t, f},
+                                                        { f, t, t, t, f, t, t, f},
+                                                        { f, f, t, t, t, t, t, f},
+                                                        { f, f, f, t, f, t, f, f},
+                                                        { t, t, t, t, f, t, f, t},
+                                                        { t, t, t, t, t, t, f, t},
+                                                        { t, t, f, f, t, f, f, t}};
 
 
 MotorDirection getElevatorDirection(Elevator* elevator){
@@ -42,7 +44,7 @@ void elevatorInit(Elevator* elevator){
     }
     elevator->obstructed    = f;
     elevator->stop_btn      = f;
-    elevator->dir           = DIRN_UP;
+    elevator->dir           = DIRN_STOP;
     elevator->num_orders    = 0;
     elevator->door_open     = f;
     elevator->current_floor = undefined;
