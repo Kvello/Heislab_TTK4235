@@ -76,6 +76,21 @@ void nextAction(Elevator* elevator){
             executeAction(i, elevator);
         }
     }
+    onwayOrders(elevator);
+}
+void onwayOrders(Elevator* elevator){
+    switch(getElevatorDirection(elevator)){
+        case DIRN_DOWN:
+            if(elevator->order_system.orders[getElevatorFloor(elevator)][1] || elevator->order_system.orders[getElevatorFloor(elevator)][2]){
+                    executeAction(arrived, elevator);
+                }
+        case DIRN_UP:
+            if(elevator->order_system.orders[getElevatorFloor(elevator)][0] || elevator->order_system.orders[getElevatorFloor(elevator)][2]){
+                executeAction(arrived, elevator);
+            }
+        default:
+            return;
+    }   
 }
 
 void executeAction(Rules rule, Elevator* elevator){

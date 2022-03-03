@@ -14,7 +14,7 @@ int main(){
 
     while(1){
         int floor = elevio_floorSensor();
-        if(floor!=undefined){
+        if(floor != undefined){
             elevator.current_floor = floor;
         }
         
