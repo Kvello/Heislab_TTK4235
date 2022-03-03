@@ -29,28 +29,30 @@ int main(){
         }
 */
 
-        // for(int f = 0; f < N_FLOORS; f++){
-        //     for(int b = 0; b < N_BUTTONS; b++){
-        //         int btnPressed = elevio_callButton(f, b);
-        //         if(btnPressed){
-        //             newOrder(&(elevator.order_system),f , b);
+        //  for(int f = 0; f < N_FLOORS; f++){
+        //      for(int b = 0; b < N_BUTTONS; b++){
+        //          int btnPressed = elevio_callButton(f, b);
+        //          if(btnPressed){
+        //              newOrder(&(elevator.order_system),f , b);
                     
-        //         }
-        //         elevio_buttonLamp(f, b, elevator.order_system.orders[f][b]);
-        //     }
+        //          }
+        //          elevio_buttonLamp(f, b, elevator.order_system.orders[f][b]);
+        //      }
+        //  }
+
+
+
+        // if(elevio_obstruction()){
+        //     elevator.obstructed=t;
+        // } else {
+        //     elevator.obstructed=f;
+        // }
+        
+        // if(elevio_stopButton()){
+        //     elevator.stop_btn = t;
         // }
 
-
-
-        if(elevio_obstruction()){
-            elevator.obstructed=t;
-        } else {
-            elevator.obstructed=f;
-        }
-        
-        if(elevio_stopButton()){
-            elevator.stop_btn = t;
-        }
+        checkButtons(&elevator);
         nextAction(&elevator);
         elevio_motorDirection(elevator.dir);
         setLamps(&elevator);
