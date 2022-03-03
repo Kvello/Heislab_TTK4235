@@ -82,8 +82,8 @@ void onwayOrders(Elevator* elevator){
     switch(getElevatorDirection(elevator)){
         case DIRN_DOWN:
             if(elevator->order_system.orders[getElevatorFloor(elevator)][1] || elevator->order_system.orders[getElevatorFloor(elevator)][2]){
-                    executeAction(arrived, elevator);
-                }
+                executeAction(arrived, elevator);
+            }
         case DIRN_UP:
             if(elevator->order_system.orders[getElevatorFloor(elevator)][0] || elevator->order_system.orders[getElevatorFloor(elevator)][2]){
                 executeAction(arrived, elevator);
@@ -156,7 +156,10 @@ void checkButtons(Elevator* elevator){
 }
 
 void setLamps(Elevator* elevator){
-    elevio_floorIndicator(elevator->current_floor); // Lamp lights up when passing new floor
+    if(elevator->current_floor != undefined){
+        elevio_floorIndicator(elevator->current_floor); // Lamp lights up when passing new floor
+    }
+    
     elevio_stopLamp(elevator->stop_btn); // Stoplamp lights up when stop button is pressed
     elevio_doorOpenLamp(elevator->door_open); // Door lamp lights up when door is open
     
