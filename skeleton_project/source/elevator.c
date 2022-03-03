@@ -52,6 +52,7 @@ void elevatorInit(Elevator* elevator){
 }
 void nextAction(Elevator* elevator){
     Floor current_order =   getNextOrder(&(elevator->order_system));
+    printf("Current order: %d, current floor: %d\n", current_order, getElevatorFloor(elevator));
     Bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             getElevatorFloor(elevator)>current_order,
                                             getElevatorFloor(elevator)<current_order,
