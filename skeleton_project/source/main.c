@@ -49,6 +49,7 @@ int main(){
         }
         nextAction(&elevator);
         elevio_motorDirection(elevator.dir);
+        elevio_doorOpenLamp(elevator.door_open);
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }

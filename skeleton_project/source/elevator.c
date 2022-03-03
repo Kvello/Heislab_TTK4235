@@ -1,5 +1,6 @@
 #include "elevator.h"
 
+
 Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, t, f},
                                                             { t, f, f, f},
                                                             { f, t, f, f},
@@ -37,7 +38,8 @@ void elevatorInit(Elevator* elevator){
     elevator->dir           = DIRN_STOP;
     elevator->num_orders    = 0;
     elevator->door_open     = f;
-    elevator->current_floor =undefined;
+    elevator->current_floor = undefined;
+    elevator->stop_time     = 0;
 }
 void nextAction(Elevator* elevator){
     Floor current_order =   getNextOrder(&(elevator->order_system));
@@ -57,19 +59,22 @@ void nextAction(Elevator* elevator){
     }
 }
 
-void executeAction(int action_num, Elevator* elevator){
-    if(action_num == 0){
-        elevator->dir = DIRN_UP;
-
-    }
-    else if(action_num == 1){
-        elevator->dir = DIRN_DOWN;
-    }
-    else if(action_num == 2){
-        elevator->dir = DIRN_STOP;
-        orderComplete(&(elevator->order_system), elevator->current_floor);
-    }
-    else if(action_num == 3){
-        elevator->dir = DIRN_STOP;
+void executeAction(Action action, Elevator* elevator){
+    switch(action){
+        case up:
+            elevator->dir = DIRN_UP;
+        case down:
+            elevator->dir = DIRN_DOWN;
+        case stop:
+            elevator->dir = DIRN_STOP;
+            orderComplete(&(elevator->order_system), elevator->current_floor);
+        case emergency_stop:
+            elevator->dir = DIRN_STOP;
+        case start_timer:
+            elevator->stop_time = time(NULL);
+        case open_door:
+            elevator->door_open = t;
+        case close_door:
+            elevator->door_open = f;
     }
 }
