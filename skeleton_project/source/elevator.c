@@ -10,13 +10,13 @@ Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, 
                                                             { f, f, f, f, f, f, f, t}};
 
 
-Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, t, t, t, f, f, f},
-                                                        { t, f, t, t, f, t, t, f},
-                                                        { f, t, t, t, f, t, t, f},
-                                                        { f, f, t, t, t, t, t, f},
-                                                        { f, f, f, t, f, t, f, f},
-                                                        { t, t, t, t, f, t, f, t},
-                                                        { t, t, t, t, t, t, f, t},
+Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f},
+                                                        { t, t, f, f, t, f, f, f},
+                                                        { t, t, f, f, t, f, f, f},
+                                                        { t, t, f, f, t, f, f, f},
+                                                        { t, t, t, t, t, f, t, t},
+                                                        { f, f, t, f, t, f, t, t},
+                                                        { f, f, f, f, f, t, t, t},
                                                         { t, t, f, f, t, f, f, t}};
 
 
