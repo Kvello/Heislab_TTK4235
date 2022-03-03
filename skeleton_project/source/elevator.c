@@ -115,3 +115,19 @@ void executeAction(Rules rule, Elevator* elevator){
 
     }
 }
+
+void setLamps(Elevator* elevator){
+    elevio_floorIndicator(elevator->current_floor); // Lamp lights up when passing new floor
+    elevio_stopLamp(elevator->stop_btn); // Stoplamp lights up when stop button is pressed
+    elevio_doorOpenLamp(elevator->door_open); // Door lamp lights up when door is open
+    
+    for(int f = 0; f < N_FLOORS; f++){
+        for(int b = 0; b < N_BUTTONS; b++){
+            int btnPressed = elevio_callButton(f, b);
+            if(btnPressed){
+                newOrder(&(elevator->order_system),f , b);              
+            }
+            elevio_buttonLamp(f, b, elevator->order_system.orders[f][b]); // Lights the lamp of the floors in orders
+        }
+    }
+}

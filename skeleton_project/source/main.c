@@ -29,32 +29,32 @@ int main(){
         }
 */
 
-        for(int f = 0; f < N_FLOORS; f++){
-            for(int b = 0; b < N_BUTTONS; b++){
-                int btnPressed = elevio_callButton(f, b);
-                if(btnPressed){
-                    newOrder(&(elevator.order_system),f , b);
+        // for(int f = 0; f < N_FLOORS; f++){
+        //     for(int b = 0; b < N_BUTTONS; b++){
+        //         int btnPressed = elevio_callButton(f, b);
+        //         if(btnPressed){
+        //             newOrder(&(elevator.order_system),f , b);
                     
-                }
-                elevio_buttonLamp(f, b, elevator.order_system.orders[f][b]);
-            }
-        }
+        //         }
+        //         elevio_buttonLamp(f, b, elevator.order_system.orders[f][b]);
+        //     }
+        // }
+
+
 
         if(elevio_obstruction()){
             elevator.obstructed=t;
-            elevio_stopLamp(1);
         } else {
             elevator.obstructed=f;
-            elevio_stopLamp(0);
         }
         
         if(elevio_stopButton()){
-            elevator.stop_btn = t;;
-            break;
+            elevator.stop_btn = t;
         }
         nextAction(&elevator);
         elevio_motorDirection(elevator.dir);
-        elevio_doorOpenLamp(elevator.door_open);
+        setLamps(&elevator);
+        //elevio_doorOpenLamp(elevator.door_open);
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
