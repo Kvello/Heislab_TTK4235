@@ -42,7 +42,7 @@ void elevatorInit(Elevator* elevator){
     }
     elevator->obstructed    = f;
     elevator->stop_btn      = f;
-    elevator->dir           = DIRN_STOP;
+    elevator->dir           = DIRN_UP;
     elevator->num_orders    = 0;
     elevator->door_open     = f;
     elevator->current_floor = undefined;
