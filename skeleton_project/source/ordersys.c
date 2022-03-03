@@ -7,7 +7,6 @@ void newOrder(OrderSys* order_sys, Floor floor, ButtonType order_type){
 }
 /**
  * @brief Get the Next Order object, 
- * @warning May get stuck in function. Allways make sure that orders has at least one order when using
  * @param orders 
  * @return Floor 
  */

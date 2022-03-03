@@ -126,7 +126,6 @@ void executeAction(Rules rule, Elevator* elevator){
             elevator->door_open = f;
             break;
         case no_orders:
-            printf("no orders\n");
             elevator->dir = DIRN_STOP;
             elevator->door_open = f;
 

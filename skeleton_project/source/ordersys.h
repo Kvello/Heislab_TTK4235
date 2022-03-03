@@ -32,6 +32,7 @@ typedef Bool OrderQueue[N_FLOORS][N_ORDER_TYPES];
 typedef struct OrderSys{
     OrderQueue orders;
     uint8_t num_orders;
+    Floor next_order;
 } OrderSys;
 
 void newOrder(OrderSys*,Floor,ButtonType);
