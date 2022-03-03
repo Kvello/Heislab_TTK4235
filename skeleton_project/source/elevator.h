@@ -26,10 +26,6 @@ void setElevatorDirection(Elevator*, MotorDirection);
 void elevatorInit(Elevator*);
 void nextAction(Elevator*);
 void executeAction(Rules, Elevator*);
-<<<<<<< HEAD
 void checkButtons(Elevator*);
 void setLamps(Elevator*);
-=======
 void onwayOrders(Elevator*);
-void setLamps(Elevator*);
->>>>>>> main
