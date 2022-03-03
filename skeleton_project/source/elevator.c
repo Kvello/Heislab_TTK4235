@@ -54,7 +54,9 @@ void nextAction(Elevator* elevator){
                                             getElevatorFloor(elevator)>current_order,
                                             getElevatorFloor(elevator)<current_order,
                                             getElevatorFloor(elevator)==current_order,
-                                            elevator->stop_btn};
+                                            elevator->stop_btn,
+                                            difftime(time(NULL),elevator->stop_time)<3,
+                                            elevator->obstructed};
     Bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
     columnWiseAnd(data_vector, state_table, state_table);
     Bool rules_fulfiled[NUM_ACTIONS];
