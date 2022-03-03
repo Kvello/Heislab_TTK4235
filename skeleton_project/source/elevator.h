@@ -10,9 +10,9 @@ typedef enum rules{up=0, down=1, arrived=2, emergency_stop=3, start_timer=4, obs
 typedef struct elevator
 {
     OrderSys order_system;
-    uint8_t num_orders;
     MotorDirection dir;
     Floor current_floor;
+    Bool between_floors;
     Bool  obstructed;
     Bool stop_btn;
     Bool door_open;
@@ -29,3 +29,4 @@ void executeAction(Rules, Elevator*);
 void checkButtons(Elevator*);
 void setLamps(Elevator*);
 void onwayOrders(Elevator*);
+

@@ -31,12 +31,13 @@ typedef enum Floor {undefined=-1,first=0, second, third, fourth} Floor;
 typedef Bool OrderQueue[N_FLOORS][N_ORDER_TYPES];
 typedef struct OrderSys{
     OrderQueue orders;
-    uint8_t num_orders;
-    Floor next_order;
+    Floor nextOrder;
 } OrderSys;
 
 void newOrder(OrderSys*,Floor,ButtonType);
 Floor getNextOrder(OrderSys*);
 void orderComplete(OrderSys*, Floor);
+void orderSysinit(OrderSys* order_sys);
+
 
 

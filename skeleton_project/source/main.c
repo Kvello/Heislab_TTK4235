@@ -16,6 +16,10 @@ int main(){
         int floor = elevio_floorSensor();
         if(floor != undefined){
             elevator.current_floor = floor;
+            elevator.between_floors = f;
+        }
+        else if(floor == undefined){
+            elevator.between_floors = t;
         }
         
         //printf("floor: %d \n",elevator.current_floor);
@@ -51,7 +55,7 @@ int main(){
         // if(elevio_stopButton()){
         //     elevator.stop_btn = t;
         // }
-
+        printf("Dir: %d\n",elevator.dir);
         checkButtons(&elevator);
         nextAction(&elevator);
         elevio_motorDirection(elevator.dir);
