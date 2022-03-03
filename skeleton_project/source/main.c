@@ -13,7 +13,11 @@ int main(){
     printf("Press the stop button on the elevator panel to exit\n");
 
     while(1){
-        elevator.current_floor = elevio_floorSensor();
+        int floor = elevio_floorSensor();
+        if(floor!=undefined){
+            elevator.current_floor = floor;
+        }
+        
         //printf("floor: %d \n",elevator.current_floor);
 /*
         if(elevator.current_floor == 0){
