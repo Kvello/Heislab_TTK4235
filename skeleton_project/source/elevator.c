@@ -79,6 +79,8 @@ void nextAction(Elevator* elevator){
     onwayOrders(elevator);
 }
 void onwayOrders(Elevator* elevator){
+    Floor floor = getElevatorFloor(elevator);
+    if(floor == undefined) return;
     switch(getElevatorDirection(elevator)){
         case DIRN_DOWN:
             if(elevator->order_system.orders[getElevatorFloor(elevator)][1] || elevator->order_system.orders[getElevatorFloor(elevator)][2]){
