@@ -1,5 +1,5 @@
 #pragma once
-#define NUM_STATE_VARIABLES 8
+#define NUM_STATE_VARIABLES 9
 #define NUM_ACTIONS 8
 
 /**

@@ -7,7 +7,8 @@ Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, 
                                                             { f, f, f, t, f, f, f, f},
                                                             { f, f, t, f, f, f, f, f},
                                                             { f, f, f, f, f, t, f, f},
-                                                            { f, f, f, f, f, f, f, t}};
+                                                            { f, f, f, f, f, f, f, t},
+                                                            { f, f, f, f, f, f, f, f}};
 
 
 Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f},
@@ -17,7 +18,8 @@ Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f
                                                         { t, t, t, t, t, f, t, t},
                                                         { f, f, t, f, t, f, t, t},
                                                         { f, f, f, f, f, t, t, t},
-                                                        { t, t, f, f, t, f, f, t}};
+                                                        { t, t, f, f, t, f, f, t},
+                                                        { f, f, t, f, t, t, f, f}};
 
 
 MotorDirection getElevatorDirection(Elevator* elevator){
@@ -37,21 +39,17 @@ void setElevatorDirection(Elevator* elevator, MotorDirection new_dir){
     return;
 }
 void elevatorInit(Elevator* elevator){
-    for(int i=0; i<N_FLOORS;i++){
-        for (int j=0; j<N_ORDER_TYPES;j++){
-            elevator->order_system.orders[i][j] = f;
-        }
-    }
+    orderSysinit(&(elevator->order_system));
     elevator->obstructed    = f;
     elevator->stop_btn      = f;
     elevator->dir           = DIRN_STOP;
-    elevator->num_orders    = 0;
     elevator->door_open     = f;
     elevator->current_floor = undefined;
     elevator->stop_time     = 0;
+    elevator->between_floors= t;
 }
 void nextAction(Elevator* elevator){
-    Floor current_order =   getNextOrder(&(elevator->order_system));
+    Floor current_order = elevator->order_system.nextOrder;
     printf("Current order: %d, current floor: %d\n", current_order, getElevatorFloor(elevator));
     Bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             current_order>getElevatorFloor(elevator),
@@ -60,7 +58,8 @@ void nextAction(Elevator* elevator){
                                             elevator->stop_btn,
                                             difftime(time(NULL),elevator->stop_time)<3,
                                             elevator->obstructed,
-                                            current_order == undefined};
+                                            current_order == undefined,
+                                            elevator->between_floors};
     Bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
     columnWiseAnd(data_vector, mask_table, state_table);
     Bool rules_fulfiled[NUM_ACTIONS];
@@ -80,15 +79,17 @@ void nextAction(Elevator* elevator){
 }
 void onwayOrders(Elevator* elevator){
     Floor floor = getElevatorFloor(elevator);
-    if(floor == undefined) return;
+    if(floor == undefined || elevator->between_floors) return;
     switch(getElevatorDirection(elevator)){
         case DIRN_DOWN:
             if(elevator->order_system.orders[getElevatorFloor(elevator)][1] || elevator->order_system.orders[getElevatorFloor(elevator)][2]){
                 executeAction(arrived, elevator);
+                executeAction(start_timer, elevator);
             }
         case DIRN_UP:
             if(elevator->order_system.orders[getElevatorFloor(elevator)][0] || elevator->order_system.orders[getElevatorFloor(elevator)][2]){
                 executeAction(arrived, elevator);
+                executeAction(start_timer, elevator);
             }
         default:
             return;
@@ -101,13 +102,16 @@ void executeAction(Rules rule, Elevator* elevator){
             elevator->dir = DIRN_UP;
             break;
         case down:
+            printf("Down");
             elevator->dir = DIRN_DOWN;
             break;
         case arrived:
             elevator->dir = DIRN_STOP;
+            elevator->order_system.nextOrder = getNextOrder(&(elevator->order_system));
             orderComplete(&(elevator->order_system), elevator->current_floor);
             break;
         case emergency_stop:
+            elevator->order_system.nextOrder = undefined;
             for(int i=0; i<N_FLOORS; i++){
                 orderComplete(&(elevator->order_system), i);
             }
@@ -115,20 +119,26 @@ void executeAction(Rules rule, Elevator* elevator){
             break;
         case start_timer:
             elevator->dir = DIRN_STOP;
+            elevator->order_system.nextOrder = getNextOrder(&(elevator->order_system));
             orderComplete(&(elevator->order_system), elevator->current_floor);
             elevator->stop_time = time(NULL);
             elevator->door_open = t;
             break;
         case obstructed:
+            elevator->order_system.nextOrder = getNextOrder(&(elevator->order_system));
             elevator->door_open = t;
             break;
         case close_door:
             elevator->door_open = f;
             break;
         case no_orders:
+            elevator->order_system.nextOrder = getNextOrder(&(elevator->order_system));
             printf("no orders\n");
             elevator->dir = DIRN_STOP;
             elevator->door_open = f;
+            break;
+        default:
+            break;
 
     }
 }

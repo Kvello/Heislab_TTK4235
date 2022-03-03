@@ -3,7 +3,6 @@
 void newOrder(OrderSys* order_sys, Floor floor, ButtonType order_type){
     //Sjekk?
     order_sys->orders[floor][order_type]=t;
-    order_sys->num_orders++;
 }
 /**
  * @brief Get the Next Order object, 
@@ -27,10 +26,16 @@ void orderComplete(OrderSys* order_sys, Floor current_floor){
     for(int i=0; i<N_ORDER_TYPES; i++){
         if(order_sys->orders[current_floor][i] == t){
             order_sys->orders[current_floor][i] = f;
-            order_sys->num_orders--;
         }
         
     }
 }
-
+void orderSysinit(OrderSys* order_sys){
+    for(int i=0; i<N_FLOORS;i++){
+        for (int j=0; j<N_ORDER_TYPES;j++){
+            order_sys->orders[i][j] = f;
+        }
+    }
+    order_sys->nextOrder = undefined;
+}
 
