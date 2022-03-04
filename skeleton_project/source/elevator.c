@@ -8,9 +8,9 @@
  *  Door closed                 |   1   |   1       |   -       |   -               |   1           |   0           |   0           |   -           
  *  next order > current floor  |   1   |   0       |   -       |   -               |   0           |   -           |   -           |   -           
  *  next order < current floor  |   0   |   1       |   -       |   -               |   0           |   -           |   -           |   -           
- *  next order == current floor |   0   |   0       |   -       |   -               |   1           |   -           |   -           |   -       
+ *  next order == current floor |   -   |   -       |   -       |   -               |   1           |   -           |   -           |   -       
  *  Stopp button                |   0   |   0       |   
- *  Stop time < 3 (sec)         |
+ *  Stop time < 3 (sec)         |   
  *  Obstruction button          |
  *  No orders(next order undef) |
  *  Between floors              |
@@ -31,10 +31,10 @@ Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, 
 Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f},
                                                         { t, t, f, f, t, f, f, f},
                                                         { t, t, f, f, t, f, f, f},
-                                                        { t, t, f, f, t, f, f, f},
+                                                        { f, f, f, f, t, f, f, f},
                                                         { t, t, t, t, t, f, t, t},
                                                         { f, f, t, f, t, f, t, t},
-                                                        { f, f, f, f, f, t, t, t},
+                                                        { f, f, f, f, f, t, t, f},
                                                         { t, t, f, f, f, f, f, t},
                                                         { f, f, t, f, t, t, f, f}};
 
@@ -96,6 +96,8 @@ void elevatorInit(Elevator* elevator){
     elevator->current_floor = undefined;
     elevator->stop_time     = 0;
     elevator->between_floors= t;
+    elevator->emergency     = f;
+    elevator->prev_dir      = DIRN_STOP;
 
     //To get in an defined state
     while(getElevatorFloor(elevator) == undefined){
@@ -108,6 +110,21 @@ void elevatorInit(Elevator* elevator){
     }
 }
 void nextAction(Elevator* elevator){
+    if(elevator->emergency && getNextOrder(&(elevator->order_system)) == getElevatorFloor(elevator)){
+        printf("PrevDir: %d\n", elevator->prev_dir);
+        if(elevator->between_floors == f){
+            elevator->emergency = f;
+            setElevatorDirection(elevator, DIRN_STOP);
+        }
+        switch(elevator->prev_dir){
+            case DIRN_DOWN:
+                setElevatorDirection(elevator,DIRN_UP);
+                return;
+            case DIRN_UP:
+                setElevatorDirection(elevator,DIRN_DOWN);
+                return;
+        }
+    }
     Floor current_order = getNextOrder(&(elevator->order_system));
     Bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             current_order>getElevatorFloor(elevator),
@@ -123,13 +140,13 @@ void nextAction(Elevator* elevator){
     columnWiseAnd(data_vector, mask_table, state_table);
     Bool rules_fulfiled[NUM_ACTIONS];
     columnWiseComparison(state_table, condition_table, rules_fulfiled);
-/*
+
     for(int i=0; i<NUM_STATE_VARIABLES; i++){
         printf("datavector[%d]: %d\n",i, data_vector[i]);
     }
-*/
+
     for(int i=0; i<NUM_ACTIONS; i++){
-        //printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
+        printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
         if(rules_fulfiled[i] == t){
             executeRule(i, elevator);
         }
@@ -174,6 +191,11 @@ void executeRule(Rule rule, Elevator* elevator){
             elevatorOrderComplete(elevator);
             break;
         case emergency_stop:
+            if(getElevatorDirection(elevator) != DIRN_STOP){
+                elevator->prev_dir = getElevatorDirection(elevator);
+            } 
+            elevator->emergency = t;
+            if(!elevator->between_floors) setElevatorDoor(elevator, t);
             flushElevatorOrders(elevator);
             setElevatorDirection(elevator, DIRN_STOP);
             break;
@@ -195,7 +217,6 @@ void executeRule(Rule rule, Elevator* elevator){
         case no_orders:
             updateElevatorOrder(elevator);
             setElevatorDirection(elevator, DIRN_STOP);
-            setElevatorDoor(elevator, f);
             break;
         default:
             break;
