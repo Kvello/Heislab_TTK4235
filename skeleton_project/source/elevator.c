@@ -110,21 +110,8 @@ void elevatorInit(Elevator* elevator){
     }
 }
 void nextAction(Elevator* elevator){
-    if(elevator->emergency && getNextOrder(&(elevator->order_system)) == getElevatorFloor(elevator)){
-        printf("PrevDir: %d\n", elevator->prev_dir);
-        if(elevator->between_floors == f){
-            elevator->emergency = f;
-            setElevatorDirection(elevator, DIRN_STOP);
-        }
-        switch(elevator->prev_dir){
-            case DIRN_DOWN:
-                setElevatorDirection(elevator,DIRN_UP);
-                return;
-            case DIRN_UP:
-                setElevatorDirection(elevator,DIRN_DOWN);
-                return;
-        }
-    }
+    Bool elevator_failed = elevatorSaftyProtocoll(elevator);
+    if(elevator_failed == t) return;
     Floor current_order = getNextOrder(&(elevator->order_system));
     Bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             current_order>getElevatorFloor(elevator),
@@ -152,6 +139,31 @@ void nextAction(Elevator* elevator){
         }
     }
     onwayOrders(elevator);
+}
+Bool elevatorSaftyProtocoll(Elevator* elevator){
+    updateElevatorOrder(elevator);
+    Floor next_order = getNextOrder(&(elevator->order_system));
+    Floor current_floor = getElevatorFloor(elevator);
+    if(elevator->emergency == t){
+        if(next_order != undefined && next_order != current_floor){
+            elevator->emergency = f;
+        }else if(next_order == current_floor && elevator->prev_dir != DIRN_STOP){
+            if(elevator->between_floors == f){
+                elevator->emergency = f;
+            }else{
+                elevator->emergency = t;
+                setElevatorDirection(elevator, -elevator->prev_dir);
+            }
+        }
+        else if(next_order == current_floor && elevator->between_floors == f && elevator->prev_dir == DIRN_STOP){
+            elevator->emergency = t;
+            setElevatorDirection(elevator, DIRN_STOP);
+            setElevatorDoor(elevator, t);
+        }else{
+            elevator->emergency = t;
+        }
+    }
+    return elevator->emergency;
 }
 void onwayOrders(Elevator* elevator){
     Floor floor = getElevatorFloor(elevator);
@@ -195,7 +207,6 @@ void executeRule(Rule rule, Elevator* elevator){
                 elevator->prev_dir = getElevatorDirection(elevator);
             } 
             elevator->emergency = t;
-            if(!elevator->between_floors) setElevatorDoor(elevator, t);
             flushElevatorOrders(elevator);
             setElevatorDirection(elevator, DIRN_STOP);
             break;
