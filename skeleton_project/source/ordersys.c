@@ -39,6 +39,7 @@ Floor getNextOrder(OrderSys* order_sys){
  */
 void orderComplete(OrderSys* order_sys, Floor current_floor){
     if(current_floor == undefined) return;
+    order_sys->nextOrder = undefined;
     for(int i=0; i<N_ORDER_TYPES; i++){
         if(getOrder(order_sys, current_floor, i) == t){
             setOrder(order_sys, current_floor, i, f);

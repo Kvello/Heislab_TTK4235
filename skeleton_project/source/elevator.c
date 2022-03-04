@@ -35,7 +35,7 @@ Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f
                                                         { t, t, t, t, t, f, t, t},
                                                         { f, f, t, f, t, f, t, t},
                                                         { f, f, f, f, f, t, t, t},
-                                                        { t, t, f, f, t, f, f, t},
+                                                        { t, t, f, f, f, f, f, t},
                                                         { f, f, t, f, t, t, f, f}};
 
 
@@ -161,13 +161,16 @@ void executeRule(Rule rule, Elevator* elevator){
     switch(rule){
         case up:
             setElevatorDirection(elevator, DIRN_UP);
+            setElevatorDoor(elevator, f);
             break;
         case down:
             setElevatorDirection(elevator, DIRN_DOWN);
+            setElevatorDoor(elevator, f);
             break;
         case arrived:
             setElevatorDirection(elevator, DIRN_STOP);
             updateElevatorOrder(elevator);
+            setElevatorDoor(elevator, t);
             elevatorOrderComplete(elevator);
             break;
         case emergency_stop:
@@ -175,10 +178,12 @@ void executeRule(Rule rule, Elevator* elevator){
             setElevatorDirection(elevator, DIRN_STOP);
             break;
         case start_timer:
+            //printf("Starting timer");
             setElevatorDirection(elevator, DIRN_STOP);
             updateElevatorOrder(elevator);
             elevator->stop_time = time(NULL);
             setElevatorDoor(elevator, t);
+            elevatorOrderComplete(elevator);
             break;
         case obstructed:
             updateElevatorOrder(elevator);
