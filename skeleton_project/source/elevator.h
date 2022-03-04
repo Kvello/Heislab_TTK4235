@@ -15,8 +15,10 @@ typedef struct elevator
     Bool between_floors;
     Bool  obstructed;
     Bool stop_btn;
+    Bool emergency;
     Bool door_open;
     time_t stop_time;
+    MotorDirection prev_dir;
 } Elevator;
 
 MotorDirection getElevatorDirection(Elevator*);
