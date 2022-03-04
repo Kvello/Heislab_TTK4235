@@ -1,5 +1,22 @@
 #include "elevator.h"
 #include <stdio.h>
+
+/**
+ * @brief condition table for determing the elevators actions
+ *  statevariables/Rules        |   Up  |   Down    |   Arrived |   Emergency stop  |   Start timer |   Obstructed  |   close door  |   No orders
+ *  ----------------------------+-----------------------------------------------------------------------------------------------------------------
+ *  Door closed                 |   1   |   1       |   -       |   -               |   1           |   0           |   0           |   -           
+ *  next order > current floor  |   1   |   0       |   -       |   -               |   0           |   -           |   -           |   -           
+ *  next order < current floor  |   0   |   1       |   -       |   -               |   0           |   -           |   -           |   -           
+ *  next order == current floor |   0   |   0       |   -       |   -               |   1           |   -           |   -           |   -       
+ *  Stopp button                |   0   |   0       |   
+ *  Stop time < 3 (sec)         |
+ *  Obstruction button          |
+ *  No orders(next order undef) |
+ *  Between floors              |
+ *  
+ * 
+ */
 Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f, f},
                                                             { t, f, f, f, f, f, f, f},
                                                             { f, t, f, f, f, f, f, f},
