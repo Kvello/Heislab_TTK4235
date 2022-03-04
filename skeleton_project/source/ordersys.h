@@ -36,8 +36,9 @@ typedef struct OrderSys{
 
 void newOrder(OrderSys*,Floor,ButtonType);
 Floor getNextOrder(OrderSys*);
+void updateNextOrder(OrderSys*);
 void orderComplete(OrderSys*, Floor);
 void orderSysinit(OrderSys* order_sys);
-
-
-
+void flushOrders(OrderSys* order_sys);
+Bool getOrder(OrderSys*, Floor, ButtonType);
+void setOrder(OrderSys*, Floor, ButtonType, Bool);

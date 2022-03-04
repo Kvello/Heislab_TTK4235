@@ -5,26 +5,43 @@ void newOrder(OrderSys* order_sys, Floor floor, ButtonType order_type){
     order_sys->orders[floor][order_type]=t;
 }
 /**
- * @brief Get the Next Order object, 
- * @param orders 
- * @return Floor 
+ * @brief Updates the Next Order object, 
+ * @param OrderSys* 
+ * @return void
  */
 
-Floor getNextOrder(OrderSys* order_sys){
+void updateNextOrder(OrderSys* order_sys){
     for(int floor=0;floor<N_FLOORS;floor++){
-        for(int order_num=0; order_num<N_ORDER_TYPES; order_num++){
-            if(order_sys->orders[floor][order_num] == t){
-                Floor dest = floor;
-                return dest;
+        for(int button_type=0; button_type<N_ORDER_TYPES; button_type++){
+            if(getOrder(order_sys, floor, button_type) == t){
+                order_sys->nextOrder = floor;
+                return;
             }
         }
     }
-    return undefined;
+    return;
 }
+/**
+ * @brief Get the Next Order object
+ * 
+ * @param order_sys 
+ * @return Floor 
+ */
+Floor getNextOrder(OrderSys* order_sys){
+    return order_sys->nextOrder;
+}
+
+/**
+ * @brief removes all orders on given floor
+ * 
+ * @param order_sys 
+ * @param current_floor 
+ */
 void orderComplete(OrderSys* order_sys, Floor current_floor){
+    if(current_floor == undefined) return;
     for(int i=0; i<N_ORDER_TYPES; i++){
-        if(order_sys->orders[current_floor][i] == t){
-            order_sys->orders[current_floor][i] = f;
+        if(getOrder(order_sys, current_floor, i) == t){
+            setOrder(order_sys, current_floor, i, f);
         }
         
     }
@@ -32,9 +49,23 @@ void orderComplete(OrderSys* order_sys, Floor current_floor){
 void orderSysinit(OrderSys* order_sys){
     for(int i=0; i<N_FLOORS;i++){
         for (int j=0; j<N_ORDER_TYPES;j++){
-            order_sys->orders[i][j] = f;
+            setOrder(order_sys, i, j, f);
         }
     }
     order_sys->nextOrder = undefined;
 }
 
+void flushOrders(OrderSys* order_sys){
+    for(int i=0; i<N_FLOORS; i++){
+        orderComplete(order_sys, i);
+    }
+    order_sys->nextOrder = undefined;
+}
+
+Bool getOrder(OrderSys* order_sys, Floor floor, ButtonType button){
+    return order_sys->orders[floor][button];
+}
+
+void setOrder(OrderSys* order_sys, Floor floor, ButtonType button, Bool set){
+    order_sys->orders[floor][button] = set;
+}
