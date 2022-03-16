@@ -1,22 +1,7 @@
 #include "elevator.h"
 #include <stdio.h>
 
-/**
- * @brief condition table for determing the elevators actions
- *  statevariables/Rules        |   Up  |   Down    |   Arrived |   Emergency stop  |   Start timer |   Obstructed  |   close door  |   No orders
- *  ----------------------------+-----------------------------------------------------------------------------------------------------------------
- *  Door closed                 |   1   |   1       |   -       |   -               |   1           |   0           |   0           |   -           
- *  next order > current floor  |   1   |   0       |   -       |   -               |   0           |   -           |   -           |   -           
- *  next order < current floor  |   0   |   1       |   -       |   -               |   0           |   -           |   -           |   -           
- *  next order == current floor |   -   |   -       |   -       |   -               |   1           |   -           |   -           |   -       
- *  Stopp button                |   0   |   0       |   
- *  Stop time < 3 (sec)         |   
- *  Obstruction button          |
- *  No orders(next order undef) |
- *  Between floors              |
- *  
- * 
- */
+
 bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f, f},
                                                             { t, f, f, f, f, f, f, f},
                                                             { f, t, f, f, f, f, f, f},
@@ -49,44 +34,26 @@ MotorDirection getElevatorDirection(Elevator* elevator){
     return elevator->dir;
 }
 
-/**
- * @brief Get the Elevator Floor object
- * 
- * @param elevator 
- * @return Floor 
- */
+
 Floor getElevatorFloor(Elevator* elevator){
     return elevator->current_floor;
 }
 
-/**
- * @brief Set the Elevator Floor object
- * 
- * @param elevator 
- * @param new_floor 
- */
+
 void setElevatorFloor(Elevator* elevator, Floor new_floor){
     if(new_floor!=undefined){
         elevator->current_floor=new_floor;
     }
     return;
 }
-/**
- * @brief Set the Elevator Direction object
- * 
- * @param elevator 
- * @param new_dir 
- */
+
 void setElevatorDirection(Elevator* elevator, MotorDirection new_dir){
     elevator->dir=new_dir;
     return;
 }
 
-/**
- * @brief Initialization of the elevator, sets all the values, and goes to defined state
- * 
- * @param elevator 
- */
+
+
 void elevatorInit(Elevator* elevator){
     orderSysinit(&(elevator->order_system));
     elevator->obstructed    = f;
