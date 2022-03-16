@@ -20,7 +20,6 @@ void columnWiseComparison(bool table1[][NUM_ACTIONS], bool table2[][NUM_ACTIONS]
         }
         if(j==NUM_STATE_VARIABLES){
             result_column[i] = t;
-            //printf("result_column[%d]: %d\n",i, result_column[i]);
         }else{
             result_column[i] = f;
         }
