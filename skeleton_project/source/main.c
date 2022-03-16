@@ -62,7 +62,7 @@ int main(){
     while(1){
         updateFloor(&elevator);
         checkButtons(&elevator);
-        nextAction(&elevator);
+        updateElevator(&elevator);
         elevio_motorDirection(elevator.dir);
         setLamps(&elevator);
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
