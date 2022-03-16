@@ -54,3 +54,15 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#Doxygen
+html/
+.html
+html
+/html
+html/*
+latex/
+.tex
+latex
+/latex
+latex/*
