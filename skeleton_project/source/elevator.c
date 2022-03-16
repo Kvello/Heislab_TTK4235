@@ -110,7 +110,7 @@ void elevatorInit(Elevator* elevator){
     }
 }
 void nextAction(Elevator* elevator){
-    Bool elevator_failed = elevatorSaftyProtocoll(elevator);
+    Bool elevator_failed = elevatorSafetyProtocoll(elevator);
     if(elevator_failed == t) return;
     Floor current_order = getNextOrder(&(elevator->order_system));
     printf("Next order: %d\n", current_order);
