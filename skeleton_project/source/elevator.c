@@ -112,8 +112,8 @@ void elevatorInit(Elevator* elevator){
 void updateElevator(Elevator* elevator){
     bool elevator_failed = elevatorSafetyProtocoll(elevator);
     if(elevator_failed == t) return;
-    bool rules_fulfiled[NUM_ACTIONS];
-    getFullfiledRules(elevator, rules_fulfiled);
+    bool rules_fulfilled[NUM_ACTIONS];
+    getFullfilledRules(elevator, rules_fulfilled);
 
 /*
     for(int i=0; i<NUM_STATE_VARIABLES; i++){
@@ -122,7 +122,7 @@ void updateElevator(Elevator* elevator){
 */
     for(int i=0; i<NUM_ACTIONS; i++){
         //printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
-        if(rules_fulfiled[i] == t){
+        if(rules_fulfilled[i] == t){
             executeRule(i, elevator);
         }
     }
@@ -240,7 +240,7 @@ void flushElevatorOrders(Elevator* elevator){
 void setElevatorDoor(Elevator* elevator, bool val){
     elevator->door_open = val;
 }
-void getFullfiledRules(Elevator* elevator, bool* rules_fulfiled){
+void getFullfilledRules(Elevator* elevator, bool* rules_fulfilled){
     Floor current_order = getNextOrder(&(elevator->order_system));
     bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             current_order>getElevatorFloor(elevator),
@@ -254,5 +254,5 @@ void getFullfiledRules(Elevator* elevator, bool* rules_fulfiled){
 
     bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
     columnWiseAnd(data_vector, mask_table, state_table);
-    columnWiseComparison(state_table, condition_table, rules_fulfiled);
+    columnWiseComparison(state_table, condition_table, rules_fulfilled);
 }
