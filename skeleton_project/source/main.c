@@ -1,3 +1,13 @@
+/**
+ * @file main.c
+ * @author Markus Kvello
+ * @brief Main modulen. Definerer funksjoner nødvendig for å lese/sette data fra/til hardware.
+ * @version 0.1
+ * @date 2022-03-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
