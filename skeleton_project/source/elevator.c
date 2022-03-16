@@ -1,3 +1,13 @@
+/**
+ * @file elevator.c
+ * @author Markus Kvello
+ * @brief Implementasjon av heismodul
+ * @version 0.1
+ * @date 2022-03-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "elevator.h"
 #include <stdio.h>
 

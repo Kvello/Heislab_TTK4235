@@ -1,3 +1,13 @@
+/**
+ * @file utils.c
+ * @author Markus Kvello 
+ * @brief Implementasjonsfil for hjelpemodul
+ * @version 0.1
+ * @date 2022-03-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "utils.h"
 #include <stdio.h>
 void columnWiseAnd(bool* data_vector, bool table[][NUM_ACTIONS], bool result_table[][NUM_ACTIONS]){
