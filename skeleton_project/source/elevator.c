@@ -17,7 +17,7 @@
  *  
  * 
  */
-Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f, f},
+bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f, f},
                                                             { t, f, f, f, f, f, f, f},
                                                             { f, t, f, f, f, f, f, f},
                                                             { f, f, f, f, t, f, f, f},
@@ -28,7 +28,7 @@ Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, 
                                                             { f, f, f, f, f, f, f, f}};
 
 
-Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f},
+bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f},
                                                         { t, t, f, f, t, f, f, f},
                                                         { t, t, f, f, t, f, f, f},
                                                         { f, f, f, f, t, f, f, f},
@@ -109,49 +109,50 @@ void elevatorInit(Elevator* elevator){
         elevio_motorDirection(getElevatorDirection(elevator));
     }
 }
-void nextAction(Elevator* elevator){
-    if(elevator->emergency && getNextOrder(&(elevator->order_system)) == getElevatorFloor(elevator)){
-        printf("PrevDir: %d\n", elevator->prev_dir);
-        if(elevator->between_floors == f){
-            elevator->emergency = f;
-            setElevatorDirection(elevator, DIRN_STOP);
-        }
-        switch(elevator->prev_dir){
-            case DIRN_DOWN:
-                setElevatorDirection(elevator,DIRN_UP);
-                return;
-            case DIRN_UP:
-                setElevatorDirection(elevator,DIRN_DOWN);
-                return;
-        }
-    }
-    Floor current_order = getNextOrder(&(elevator->order_system));
-    Bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
-                                            current_order>getElevatorFloor(elevator),
-                                            current_order<getElevatorFloor(elevator),
-                                            getElevatorFloor(elevator)==current_order,
-                                            elevator->stop_btn,
-                                            difftime(time(NULL),elevator->stop_time)<3,
-                                            elevator->obstructed,
-                                            current_order == undefined,
-                                            elevator->between_floors};
+void updateElevator(Elevator* elevator){
+    bool elevator_failed = elevatorSafetyProtocoll(elevator);
+    if(elevator_failed == t) return;
+    bool rules_fulfilled[NUM_ACTIONS];
+    getFullfilledRules(elevator, rules_fulfilled);
 
-    Bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
-    columnWiseAnd(data_vector, mask_table, state_table);
-    Bool rules_fulfiled[NUM_ACTIONS];
-    columnWiseComparison(state_table, condition_table, rules_fulfiled);
-
+/*
     for(int i=0; i<NUM_STATE_VARIABLES; i++){
         printf("datavector[%d]: %d\n",i, data_vector[i]);
     }
-
+*/
     for(int i=0; i<NUM_ACTIONS; i++){
-        printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
-        if(rules_fulfiled[i] == t){
+        //printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
+        if(rules_fulfilled[i] == t){
             executeRule(i, elevator);
         }
     }
     onwayOrders(elevator);
+}
+bool elevatorSafetyProtocoll(Elevator* elevator){
+
+    if(elevator->emergency == t){
+        updateElevatorOrder(elevator);
+        Floor next_order = getNextOrder(&(elevator->order_system));
+        Floor current_floor = getElevatorFloor(elevator);
+        if(next_order != undefined && next_order != current_floor){
+            elevator->emergency = f;
+        }else if(next_order == current_floor && elevator->prev_dir != DIRN_STOP){
+            if(elevator->between_floors == f){
+                elevator->emergency = f;
+            }else{
+                elevator->emergency = t;
+                setElevatorDirection(elevator, -elevator->prev_dir);
+            }
+        }
+        else if(next_order == current_floor && elevator->between_floors == f && elevator->prev_dir == DIRN_STOP){
+            elevator->emergency = t;
+            setElevatorDirection(elevator, DIRN_STOP);
+            setElevatorDoor(elevator, t);
+        }else{
+            elevator->emergency = t;
+        }
+    }
+    return elevator->emergency;
 }
 void onwayOrders(Elevator* elevator){
     Floor floor = getElevatorFloor(elevator);
@@ -195,7 +196,6 @@ void executeRule(Rule rule, Elevator* elevator){
                 elevator->prev_dir = getElevatorDirection(elevator);
             } 
             elevator->emergency = t;
-            if(!elevator->between_floors) setElevatorDoor(elevator, t);
             flushElevatorOrders(elevator);
             setElevatorDirection(elevator, DIRN_STOP);
             break;
@@ -224,44 +224,6 @@ void executeRule(Rule rule, Elevator* elevator){
     }
 }
 
-void checkButtons(Elevator* elevator){
-    for(int f = 0; f < N_FLOORS; f++){
-        for(int b = 0; b < N_BUTTONS; b++){
-            int btnPressed = elevio_callButton(f, b);
-            if(btnPressed){
-                newOrder(&(elevator->order_system),f , b); // Updates orders when a button is pressed
-            }
-        }
-    }
-
-    if(elevio_obstruction()){
-        elevator->obstructed=t;
-    } else {
-        elevator->obstructed=f;
-    }
-        
-    if(elevio_stopButton()){
-        elevator->stop_btn = t;
-    }
-    else{
-        elevator->stop_btn = f;
-    }
-}
-
-void setLamps(Elevator* elevator){
-    if(elevator->current_floor != undefined){
-        elevio_floorIndicator(elevator->current_floor); // Lamp lights up when passing new floor
-    }
-    
-    elevio_stopLamp(elevator->stop_btn); // Stoplamp lights up when stop button is pressed
-    elevio_doorOpenLamp(elevator->door_open); // Door lamp lights up when door is open
-    
-    for(int f = 0; f < N_FLOORS; f++){
-        for(int b = 0; b < N_BUTTONS; b++){
-            elevio_buttonLamp(f, b, elevator->order_system.orders[f][b]); // Lights the lamp of the floors in orders
-        }
-    }   
-}
 
 void updateElevatorOrder(Elevator* elevator){
     updateNextOrder(&(elevator->order_system));
@@ -275,6 +237,22 @@ void flushElevatorOrders(Elevator* elevator){
     flushOrders(&(elevator->order_system));
 }
 
-void setElevatorDoor(Elevator* elevator, Bool set){
-    elevator->door_open = set;
+void setElevatorDoor(Elevator* elevator, bool val){
+    elevator->door_open = val;
+}
+void getFullfilledRules(Elevator* elevator, bool* rules_fulfilled){
+    Floor current_order = getNextOrder(&(elevator->order_system));
+    bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
+                                            current_order>getElevatorFloor(elevator),
+                                            current_order<getElevatorFloor(elevator),
+                                            getElevatorFloor(elevator)==current_order,
+                                            elevator->stop_btn,
+                                            difftime(time(NULL),elevator->stop_time)<3,
+                                            elevator->obstructed,
+                                            current_order == undefined,
+                                            elevator->between_floors};
+
+    bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
+    columnWiseAnd(data_vector, mask_table, state_table);
+    columnWiseComparison(state_table, condition_table, rules_fulfilled);
 }
