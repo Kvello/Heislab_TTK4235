@@ -240,7 +240,7 @@ void flushElevatorOrders(Elevator* elevator){
 void setElevatorDoor(Elevator* elevator, bool val){
     elevator->door_open = val;
 }
-void getFullfiledRules(Elevator* elevator, bool rules_fulfiled[NUM_ACTIONS]){
+void getFullfiledRules(Elevator* elevator, bool* rules_fulfiled){
     Floor current_order = getNextOrder(&(elevator->order_system));
     bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             current_order>getElevatorFloor(elevator),
@@ -254,6 +254,5 @@ void getFullfiledRules(Elevator* elevator, bool rules_fulfiled[NUM_ACTIONS]){
 
     bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
     columnWiseAnd(data_vector, mask_table, state_table);
-    bool rules_fulfiled[NUM_ACTIONS];
     columnWiseComparison(state_table, condition_table, rules_fulfiled);
 }
