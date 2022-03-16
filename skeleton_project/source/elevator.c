@@ -113,6 +113,7 @@ void nextAction(Elevator* elevator){
     Bool elevator_failed = elevatorSaftyProtocoll(elevator);
     if(elevator_failed == t) return;
     Floor current_order = getNextOrder(&(elevator->order_system));
+    printf("Next order: %d\n", current_order);
     Bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             current_order>getElevatorFloor(elevator),
                                             current_order<getElevatorFloor(elevator),
@@ -127,13 +128,13 @@ void nextAction(Elevator* elevator){
     columnWiseAnd(data_vector, mask_table, state_table);
     Bool rules_fulfiled[NUM_ACTIONS];
     columnWiseComparison(state_table, condition_table, rules_fulfiled);
-
+/*
     for(int i=0; i<NUM_STATE_VARIABLES; i++){
         printf("datavector[%d]: %d\n",i, data_vector[i]);
     }
-
+*/
     for(int i=0; i<NUM_ACTIONS; i++){
-        printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
+        //printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
         if(rules_fulfiled[i] == t){
             executeRule(i, elevator);
         }
@@ -141,10 +142,11 @@ void nextAction(Elevator* elevator){
     onwayOrders(elevator);
 }
 Bool elevatorSaftyProtocoll(Elevator* elevator){
-    updateElevatorOrder(elevator);
-    Floor next_order = getNextOrder(&(elevator->order_system));
-    Floor current_floor = getElevatorFloor(elevator);
+
     if(elevator->emergency == t){
+        updateElevatorOrder(elevator);
+        Floor next_order = getNextOrder(&(elevator->order_system));
+        Floor current_floor = getElevatorFloor(elevator);
         if(next_order != undefined && next_order != current_floor){
             elevator->emergency = f;
         }else if(next_order == current_floor && elevator->prev_dir != DIRN_STOP){
