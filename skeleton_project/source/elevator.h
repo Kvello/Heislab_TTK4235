@@ -1,3 +1,13 @@
+/**
+ * @file elevator.h
+ * @author Markus Kvello
+ * @brief Heismodul. Definerer tilstanadsmaskin og beslutningstabell
+ * @version 0.1
+ * @date 2022-03-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #pragma once
 #include "ordersys.h"
 #include "driver/elevio.h"
