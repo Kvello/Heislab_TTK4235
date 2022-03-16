@@ -9,7 +9,6 @@
  * @brief Hjelpe struktur for sann/usann verdier
  * 
  */
-bool a = true;
 
 
 

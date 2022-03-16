@@ -28,7 +28,7 @@ typedef enum Floor {undefined=-1,first=0, second, third, fourth} Floor;
  * 4 etasje |  -  | Ned | Kupeknapp
  */
 
-typedef Bool OrderQueue[N_FLOORS][N_ORDER_TYPES];
+typedef bool OrderQueue[N_FLOORS][N_ORDER_TYPES];
 typedef struct OrderSys{
     OrderQueue orders;
     Floor nextOrder;
@@ -40,5 +40,5 @@ void updateNextOrder(OrderSys*);
 void orderComplete(OrderSys*, Floor);
 void orderSysinit(OrderSys* order_sys);
 void flushOrders(OrderSys* order_sys);
-Bool getOrder(OrderSys*, Floor, ButtonType);
-void setOrder(OrderSys*, Floor, ButtonType, Bool);
+bool getOrder(OrderSys*, Floor, ButtonType);
+void setOrder(OrderSys*, Floor, ButtonType, bool);

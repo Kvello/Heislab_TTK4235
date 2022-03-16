@@ -1,6 +1,6 @@
 #include "utils.h"
 #include <stdio.h>
-void columnWiseAnd(Bool* data_vector, Bool table[][NUM_ACTIONS], Bool result_table[][NUM_ACTIONS]){
+void columnWiseAnd(bool* data_vector, bool table[][NUM_ACTIONS], bool result_table[][NUM_ACTIONS]){
     for(int i=0; i<NUM_STATE_VARIABLES; i++)
         for(int j=0; j<NUM_ACTIONS; j++){
             if(data_vector[i] && table[i][j]){
@@ -11,7 +11,7 @@ void columnWiseAnd(Bool* data_vector, Bool table[][NUM_ACTIONS], Bool result_tab
             }
         }
 }
-void columnWiseComparison(Bool table1[][NUM_ACTIONS], Bool table2[][NUM_ACTIONS], Bool* result_column){
+void columnWiseComparison(bool table1[][NUM_ACTIONS], bool table2[][NUM_ACTIONS], bool* result_column){
 
     for(int i=0; i<NUM_ACTIONS; i++){
         int j=0;
