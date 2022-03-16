@@ -115,13 +115,7 @@ void updateElevator(Elevator* elevator){
     bool rules_fulfilled[NUM_ACTIONS];
     getFullfilledRules(elevator, rules_fulfilled);
 
-/*
-    for(int i=0; i<NUM_STATE_VARIABLES; i++){
-        printf("datavector[%d]: %d\n",i, data_vector[i]);
-    }
-*/
     for(int i=0; i<NUM_ACTIONS; i++){
-        //printf("rules[%d]: %d\n",i, rules_fulfiled[i]);
         if(rules_fulfilled[i] == t){
             executeRule(i, elevator);
         }
