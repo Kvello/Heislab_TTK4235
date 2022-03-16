@@ -63,10 +63,10 @@ void flushOrders(OrderSys* order_sys){
     order_sys->nextOrder = undefined;
 }
 
-Bool getOrder(OrderSys* order_sys, Floor floor, ButtonType button){
+bool getOrder(OrderSys* order_sys, Floor floor, ButtonType button){
     return order_sys->orders[floor][button];
 }
 
-void setOrder(OrderSys* order_sys, Floor floor, ButtonType button, Bool set){
+void setOrder(OrderSys* order_sys, Floor floor, ButtonType button, bool set){
     order_sys->orders[floor][button] = set;
 }

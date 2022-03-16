@@ -1,17 +1,20 @@
 #pragma once
 #define NUM_STATE_VARIABLES 9
 #define NUM_ACTIONS 8
+#include <stdbool.h>
+#define t true
+#define f false
 
 /**
  * @brief Hjelpe struktur for sann/usann verdier
  * 
  */
-typedef enum Bool{f, t} Bool;
+bool a = true;
 
 
 
 
 
 
-void columnWiseAnd(Bool* data_vector, Bool table[][NUM_ACTIONS], Bool result_table[][NUM_ACTIONS]);
-void columnWiseComparison(Bool table1[][NUM_ACTIONS], Bool table2[][NUM_ACTIONS], Bool* result_column);
+void columnWiseAnd(bool* data_vector, bool table[][NUM_ACTIONS], bool result_table[][NUM_ACTIONS]);
+void columnWiseComparison(bool table1[][NUM_ACTIONS], bool table2[][NUM_ACTIONS], bool* result_column);

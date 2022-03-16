@@ -4,11 +4,11 @@
 #include <time.h>
 #include "elevator.h"
 void checkButtons(Elevator* elevator){
-    for(int f = 0; f < N_FLOORS; f++){
-        for(int b = 0; b < N_BUTTONS; b++){
-            int btnPressed = elevio_callButton(f, b);
+    for(int flr = 0; flr < N_FLOORS; flr++){
+        for(int btn = 0; btn < N_BUTTONS; btn++){
+            int btnPressed = elevio_callButton(flr, btn);
             if(btnPressed){
-                newOrder(&(elevator->order_system),f , b); // Updates orders when a button is pressed
+                newOrder(&(elevator->order_system),flr , btn); // Updates orders when a button is pressed
             }
         }
     }
@@ -35,9 +35,9 @@ void setLamps(Elevator* elevator){
     elevio_stopLamp(elevator->stop_btn); // Stoplamp lights up when stop button is pressed
     elevio_doorOpenLamp(elevator->door_open); // Door lamp lights up when door is open
     
-    for(int f = 0; f < N_FLOORS; f++){
-        for(int b = 0; b < N_BUTTONS; b++){
-            elevio_buttonLamp(f, b, elevator->order_system.orders[f][b]); // Lights the lamp of the floors in orders
+    for(int flr = 0; flr < N_FLOORS; flr++){
+        for(int btn = 0; btn < N_BUTTONS; btn++){
+            elevio_buttonLamp(flr, btn, elevator->order_system.orders[flr][btn]); // Lights the lamp of the floors in orders
         }
     }   
 }

@@ -17,7 +17,7 @@
  *  
  * 
  */
-Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f, f},
+bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f, f},
                                                             { t, f, f, f, f, f, f, f},
                                                             { f, t, f, f, f, f, f, f},
                                                             { f, f, f, f, t, f, f, f},
@@ -28,7 +28,7 @@ Bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, 
                                                             { f, f, f, f, f, f, f, f}};
 
 
-Bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f},
+bool mask_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =    {{ t, t, f, f, t, t, t, f},
                                                         { t, t, f, f, t, f, f, f},
                                                         { t, t, f, f, t, f, f, f},
                                                         { f, f, f, f, t, f, f, f},
@@ -110,11 +110,11 @@ void elevatorInit(Elevator* elevator){
     }
 }
 void nextAction(Elevator* elevator){
-    Bool elevator_failed = elevatorSafetyProtocoll(elevator);
+    bool elevator_failed = elevatorSafetyProtocoll(elevator);
     if(elevator_failed == t) return;
     Floor current_order = getNextOrder(&(elevator->order_system));
     printf("Next order: %d\n", current_order);
-    Bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
+    bool data_vector[NUM_STATE_VARIABLES] = {!elevator->door_open,
                                             current_order>getElevatorFloor(elevator),
                                             current_order<getElevatorFloor(elevator),
                                             getElevatorFloor(elevator)==current_order,
@@ -124,9 +124,9 @@ void nextAction(Elevator* elevator){
                                             current_order == undefined,
                                             elevator->between_floors};
 
-    Bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
+    bool state_table[NUM_STATE_VARIABLES][NUM_ACTIONS]; 
     columnWiseAnd(data_vector, mask_table, state_table);
-    Bool rules_fulfiled[NUM_ACTIONS];
+    bool rules_fulfiled[NUM_ACTIONS];
     columnWiseComparison(state_table, condition_table, rules_fulfiled);
 /*
     for(int i=0; i<NUM_STATE_VARIABLES; i++){
@@ -141,7 +141,7 @@ void nextAction(Elevator* elevator){
     }
     onwayOrders(elevator);
 }
-Bool elevatorSafetyProtocoll(Elevator* elevator){
+bool elevatorSafetyProtocoll(Elevator* elevator){
 
     if(elevator->emergency == t){
         updateElevatorOrder(elevator);
@@ -250,6 +250,6 @@ void flushElevatorOrders(Elevator* elevator){
     flushOrders(&(elevator->order_system));
 }
 
-void setElevatorDoor(Elevator* elevator, Bool set){
+void setElevatorDoor(Elevator* elevator, bool set){
     elevator->door_open = set;
 }
