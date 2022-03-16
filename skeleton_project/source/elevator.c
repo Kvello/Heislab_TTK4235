@@ -141,7 +141,7 @@ void nextAction(Elevator* elevator){
     }
     onwayOrders(elevator);
 }
-Bool elevatorSaftyProtocoll(Elevator* elevator){
+Bool elevatorSafetyProtocoll(Elevator* elevator){
 
     if(elevator->emergency == t){
         updateElevatorOrder(elevator);

@@ -35,4 +35,4 @@ void updateElevatorOrder(Elevator*);
 void elevatorOrderComplete(Elevator*);
 void flushElevatorOrders(Elevator*);
 void setElevatorDoor(Elevator*, Bool);
-Bool elevatorSaftyProtocoll(Elevator*);
+Bool elevatorSafetyProtocoll(Elevator*);
