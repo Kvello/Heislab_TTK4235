@@ -9,7 +9,6 @@
  * 
  */
 #include "utils.h"
-#include <stdio.h>
 void columnWiseAnd(bool* data_vector, bool table[][NUM_ACTIONS], bool result_table[][NUM_ACTIONS]){
     for(int i=0; i<NUM_STATE_VARIABLES; i++)
         for(int j=0; j<NUM_ACTIONS; j++){

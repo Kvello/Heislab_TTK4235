@@ -9,7 +9,6 @@
  * 
  */
 #include "elevator.h"
-#include <stdio.h>
 
 
 bool condition_table[NUM_STATE_VARIABLES][NUM_ACTIONS] =   {{ t, t, f, f, t, f, f, f},
