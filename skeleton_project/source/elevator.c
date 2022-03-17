@@ -170,7 +170,6 @@ void executeRule(Rule rule, Elevator* elevator){
             setElevatorDirection(elevator, DIRN_STOP);
             break;
         case start_timer:
-            //printf("Starting timer");
             setElevatorDirection(elevator, DIRN_STOP);
             updateElevatorOrder(elevator);
             elevator->stop_time = time(NULL);
