@@ -111,7 +111,7 @@ bool elevatorSafetyProtocoll(Elevator* elevator){
                 elevator->emergency = f;
             }else{
                 elevator->emergency = t;
-                setElevatorDirection(elevator, -elevator->prev_dir);
+                setElevatorDirection(elevator, -elevator->prev_dir);//Reverser retning
             }
         }
         else if(next_order == current_floor && elevator->between_floors == f && elevator->prev_dir == DIRN_STOP){
