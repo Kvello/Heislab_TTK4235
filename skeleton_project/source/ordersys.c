@@ -1,6 +1,6 @@
 /**
  * @file ordersys.c
- * @author Markus (you@domain.com)
+ * @author Markus
  * @brief Implementasjonsfil for ordresystem modul
  * @version 0.1
  * @date 2022-03-16
